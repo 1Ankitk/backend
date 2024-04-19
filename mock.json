@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "first_name": "rahul",
+    "second_name": "singh",
+    "email": "rahulsingh@gmail.com",
+    "gender": "male"
+  },
+  {
+    "id": 2,
+    "first_name": "rohit",
+    "second_name": "singh",
+    "email": "rohitsingh@gmail.com",
+    "gender": "male"
+  },
+  {
+    "first_name": "rishabh",
+    "second_name": "bansal",
+    "email": "risban@gmail.com",
+    "gender": "male",
+    "id": 3
+  }
+]

@@ -1,0 +1,17 @@
+const express = require("express");
+const router = express.Router();
+const {handelUserSignup , handelUserlogin , changeEmail,changePhoneNumber,handelGetUsers,handelAllUsers,createPost,getAllPost,createLike,deleteAllNodes,createComment,getComment,createFollower } = require("../controllers/users");
+router.post("/",handelUserSignup);
+router.post("/login",handelUserlogin);
+router.post("/login/changeEmail",changeEmail);
+router.post("/login/changePhoneNumber",changePhoneNumber);
+router.post("/login/handelGetUsers", handelGetUsers);
+router.get("/login/handelAllUsers" , handelAllUsers);
+router.post("/login/createPost" , createPost);
+router.get("/login/getAllPost" , getAllPost);
+router.post("/login/like" , createLike);
+router.post("/login/deleteAllNodes" , deleteAllNodes);
+router.post("/login/comments" , createComment);
+router.get("/login/getComments" , getComment);
+router.post("/login/follow" , createFollower);
+module.exports = router;
