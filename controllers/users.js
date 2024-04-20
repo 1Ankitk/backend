@@ -37,7 +37,12 @@ async function handelUserlogin(req, res) {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email, password })
-    if (!user || user.password !== password) return res.status(401).send("Invalid email or password");;
+    if (!user)
+      return res.json({ msg: "Incorrect email or Password", status: false });
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid)
+      return res.json({ msg: "Incorrect email or Password", status: false });
+    delete user.password;
     const token = setUser(user);
     const username = user.username;
     await UserSession.create({
