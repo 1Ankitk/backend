@@ -19,14 +19,8 @@ app.use(express.urlencoded({extended:false}))
 app.use(cookieParser());
 app.use(express.json());
 
-// app.use( (req,res,next)=>{
-//     console.log("hello from middleware");
-//     console.log(req.body);
-//     next();
-// })
-
 app.use(session({
-    secret: 'AiZw',
+    secret: process.env.secret,
     resave: false,
     saveUninitialized: false,
     store: new MongoStore({  mongoUrl: process.env.MONGO_URL })
