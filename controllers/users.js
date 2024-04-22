@@ -1,6 +1,6 @@
 const { User, UserSession } = require("../models/users");
 const { setUser, getUser } = require("../service/auth");
-const { dataToInsert, } = require("../database");
+const { dataToInsert, dataToFetch} = require("../database");
 const bcrypt = require("bcrypt");
 const { createPostRelation, getPost, createLikeRelation, deleteNodes, createComments, getAllComments, createFollowers } = require("../neo4jDb");
 
@@ -33,9 +33,8 @@ async function handelUserSignup(req, res, next) {
 }
 
 async function handelUserlogin(req, res) {
-    console.log(req.body);
+    // console.log(req.body);
     const { email, password } = req.body;
-
     const user = await User.findOne({ email, password })
     if (!user)
       return res.json({ msg: "Incorrect email or Password", status: false });
@@ -166,4 +165,4 @@ async function getComment(req, res) {
 async function createFollower(req, res) {
     createFollowers(req, res);
 }
-module.exports = { handelUserSignup, handelUserlogin, changeEmail, changePhoneNumber, handelGetUsers, handelAllUsers, createPost, getAllPost, createLike, deleteAllNodes, createComment, getComment, createFollower }; 
+module.exports = { handelUserSignup, handelUserlogin, changeEmail, changePhoneNumber, handelGetUsers, handelAllUsers, createPost, getAllPost, createLike, deleteAllNodes, createComment, getComment, createFollower, handleAllUsersSessionsActivity}; 
