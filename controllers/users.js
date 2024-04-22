@@ -114,6 +114,22 @@ async function changePhoneNumber(req, res) {
     res.send(token);
 }
 
+async function handleAllUsersSessionsActivity(req, res) {
+    try {
+        dataToFetch((err, data) => {
+            if (err) {
+                console.error(err);
+                res.status(500).json({ message: 'Internal Server Error' });
+                return;
+            }
+            res.json(data); // Assuming data is an array of objects
+        });
+    } catch (error) {
+        // console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
 async function handelGetUsers(req, res) {
     const { email } = req.body;
     const user = await User.findOne({ email });
