@@ -6,6 +6,7 @@ router.post("/login",handelUserlogin);
 router.post("/login/changeEmail",changeEmail);
 router.post("/login/changePhoneNumber",changePhoneNumber);
 router.post("/login/handelGetUsers", handelGetUsers);
+router.get("/login/handleAllUsersSessionsActivity", handleAllUsersSessionsActivity);
 router.get("/login/handelAllUsers" , handelAllUsers);
 router.post("/login/createPost" , createPost);
 router.get("/login/getAllPost" , getAllPost);
