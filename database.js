@@ -45,29 +45,29 @@ function dataToFetch(cb) {
 }
 
 async function dataToInsert(UserSessionForUser) {
-  const data = { username: UserSessionForUser.username, numberOfTimesLoggedIn: UserSessionForUser.numberOfTimesLoggedIn, LastLogin: UserSessionForUser.lastLogin, activity: UserSessionForUser.activity, created_at: UserSessionForUser.createdAt, last_updated: UserSessionForUser.updatedAt };
-
-  console.log("this is console under datatoinsert .......   " + JSON.stringify(UserSessionForUser) + "the data is " + JSON.stringify(data));
-  connection.query('INSERT INTO userSessions SET?', data, (err, rows) => {
-    if (err) {
-      console.error('Error executing query: ' + err.stack);
-      return;
-    }
-    console.log('Data inserted into  MySQL server:');
-    console.log(rows);
-  });
-
+  try{
+    const data = { username: UserSessionForUser.username, numberOfTimesLoggedIn: UserSessionForUser.numberOfTimesLoggedIn, LastLogin: UserSessionForUser.lastLogin, activity: UserSessionForUser.activity, created_at: UserSessionForUser.createdAt, last_updated: UserSessionForUser.updatedAt };
+    // console.log("this is console under datatoinsert .......   " + JSON.stringify(UserSessionForUser) + "the data is " + JSON.stringify(data));
+    connection.query('INSERT INTO userSessions SET?', data, (err, rows) => {
+      if (err) {
+        console.error('Error executing query: ' + err.stack);
+        return;
+      }
+      console.log('Data inserted into  MySQL server:');
+      // console.log(rows);
+    });
+  }catch (err) {
+    console.error('Error executing query:', err);
+  }
 }
 
 async function disConnectMysql() {
-
-  connection.end((err) => {
-    if (err) {
-      console.error('Error closing connection: ' + err.stack);
-      return;
-    }
+  try {
+    connection.end();
     console.log('Connection closed.');
-  });
+  } catch (err) {
+    console.error('Error closing connection: ' + err);
+  }
 }
 
 
