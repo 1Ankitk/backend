@@ -71,4 +71,4 @@ async function disConnectMysql() {
 }
 
 
-module.exports = { connectMySql, dataToInsert, disConnectMysql }
+module.exports = { connectMySql, dataToInsert, disConnectMysql ,dataToFetch}
