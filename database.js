@@ -26,6 +26,23 @@ async function connectMySql() {
   }
 }
 
+function dataToFetch(cb) {
+  try {
+    connection.query('SELECT * FROM userSessions', (err, rows) => {
+      // console.log(rows);
+      if (err) {
+        console.error('Error executing query: ' + err.stack);
+        cb(err, null);
+        return;
+      }
+      console.log('Data retrieved from userSessions table:');
+      cb(null, rows);
+      return;
+    });
+  } catch (err) {
+    console.log('Error in dataToFetch:', err);
+  }
+}
 
 async function dataToInsert(UserSessionForUser) {
   const data = { username: UserSessionForUser.username, numberOfTimesLoggedIn: UserSessionForUser.numberOfTimesLoggedIn, LastLogin: UserSessionForUser.lastLogin, activity: UserSessionForUser.activity, created_at: UserSessionForUser.createdAt, last_updated: UserSessionForUser.updatedAt };
