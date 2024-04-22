@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {handelUserSignup , handelUserlogin , changeEmail,changePhoneNumber,handelGetUsers,handelAllUsers,createPost,getAllPost,createLike,deleteAllNodes,createComment,getComment,createFollower } = require("../controllers/users");
+const {handelUserSignup , handelUserlogin , changeEmail,changePhoneNumber,handelGetUsers,handelAllUsers,createPost,getAllPost,createLike,deleteAllNodes,createComment,getComment,createFollower, handleAllUsersSessionsActivity} = require("../controllers/users");
 router.post("/",handelUserSignup);
 router.post("/login",handelUserlogin);
 router.post("/login/changeEmail",changeEmail);
