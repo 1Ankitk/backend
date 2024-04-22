@@ -35,7 +35,7 @@ async function handelUserSignup(req, res, next) {
 async function handelUserlogin(req, res) {
     // console.log(req.body);
     const { email, password } = req.body;
-    const user = await User.findOne({ email, password })
+    const user = await User.findOne({ email })
     if (!user)
       return res.json({ msg: "Incorrect email or Password", status: false });
     const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -44,20 +44,21 @@ async function handelUserlogin(req, res) {
     delete user.password;
     const token = setUser(user);
     const username = user.username;
-    await UserSession.create({
-        username
-    })
-    console.log("this is console for sessions " + res.cookie);
-    const UserSessionForUser = await UserSession.findOne({ username });
-    console.log("this is console in handle login" + UserSessionForUser);
-    if (!UserSessionForUser) res.send("user not loggedIn");
-    UserSessionForUser.numberOfTimesLoggedIn = UserSessionForUser.numberOfTimesLoggedIn ? Number(UserSessionForUser.numberOfTimesLoggedIn) + 1 : 1;
+    const existingSession = await UserSession.findOne({ username });
+    // console.log("this is console for sessions " + res.cookie);
+    let UserSessionForUser;
+    if (existingSession) {
+        UserSessionForUser = existingSession;
+        UserSessionForUser.numberOfTimesLoggedIn = UserSessionForUser.numberOfTimesLoggedIn ? Number(UserSessionForUser.numberOfTimesLoggedIn) + 1 : 1;
+    } else {
+        UserSessionForUser = new UserSession({ username }); // Create new session if none exists
+    }
     UserSessionForUser.lastLogin = new Date();
     UserSessionForUser.activity = "Login";
     await UserSessionForUser.save();
     dataToInsert(UserSessionForUser);
-    console.log("this is console under handler for request...." + req.body);
-    console.log("user" + user + "user session " + UserSessionForUser);
+    // console.log("this is console under handler for request...." + req.body);
+    // console.log("user" + user + "user session " + UserSessionForUser);
     return res.status(200).send(token);
 
 }
@@ -75,6 +76,8 @@ async function changeEmail(req, res) {
             res.send("authentication failed");
         }
     };
+    const existingUser = await User.findOne({ email: newEmail });
+    if (existingUser) return res.status(409).json({ message: "Email already in use" });
     const username = user.username;
     const UserSessionForUser = await UserSession.findOne({ username });
     if (!UserSessionForUser) res.send("user not loggedIn");
@@ -82,12 +85,12 @@ async function changeEmail(req, res) {
     UserSessionForUser.lastLogin = new Date();
     UserSessionForUser.activity = "changeEmail";
     user.email = newEmail;
-    console.log("user after email" + user);
+    // console.log("user after email" + user);
     user.save();
     UserSessionForUser.save();
     dataToInsert(UserSessionForUser);
-    res.send(token);
-
+    // res.send(token);
+    return res.status(200).json({ message: "Email changed successfully" });
 }
 
 async function changePhoneNumber(req, res) {
@@ -101,6 +104,8 @@ async function changePhoneNumber(req, res) {
             res.send("authentication failed")
         }
     };
+    const existingUser = await User.findOne({ phoneNumber: newPhoneNumber });
+    if (existingUser) return res.status(409).json({ message: "PhoneNumber already in use" });
     user.phoneNumber = newPhoneNumber;
     const username = user.username;
     const UserSessionForUser = await UserSession.findOne({ username });
@@ -110,7 +115,7 @@ async function changePhoneNumber(req, res) {
     user.save();
     UserSessionForUser.save();
     dataToInsert(UserSessionForUser);
-    res.send(token);
+    return res.status(200).json({ message: "PhoneNumber changed successfully" });
 }
 
 async function handleAllUsersSessionsActivity(req, res) {
