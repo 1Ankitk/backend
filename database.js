@@ -3,7 +3,7 @@ require("dotenv").config();
 
 // Create a connection to the MySQL server
 
-const connection = mysql.createConnection({
+const connection = mysql.createPool({
   host: process.env.host,
   user: process.env.user,
   password: process.env.password,
